@@ -252,6 +252,19 @@ resultado+=letra;
 
 document.getElementById("salida").innerText =
 resultado;
+  if(modo === "es-esteban" && resultado.trim() !== ""){
+
+    speechSynthesis.cancel();
+
+    const voz = new SpeechSynthesisUtterance(resultado);
+
+    voz.lang = "es-ES";
+    voz.rate = 0.9;
+    voz.pitch = 0.8;
+
+    speechSynthesis.speak(voz);
+
+}
 
 }
 
