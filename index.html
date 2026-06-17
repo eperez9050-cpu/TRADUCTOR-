@@ -182,6 +182,19 @@ if(mapa[base]){
 
 let nueva = mapa[base];
 
+const tieneTilde =
+"áéíóúÁÉÍÓÚ".includes(letra);
+
+if(tieneTilde){
+
+if(nueva==="a") nueva="á";
+else if(nueva==="e") nueva="é";
+else if(nueva==="i") nueva="í";
+else if(nueva==="o") nueva="ó";
+else if(nueva==="u") nueva="ú";
+
+}
+
 if(letra===letra.toLowerCase()){
 resultado+=nueva.toUpperCase();
 }else{
@@ -208,7 +221,18 @@ let base = quitarTilde(letra);
 
 if(inverso[base]){
 
-let nueva = inverso[base];
+const tieneTilde =
+"áéíóúÁÉÍÓÚ".includes(letra);
+
+if(tieneTilde){
+
+if(nueva==="a") nueva="á";
+else if(nueva==="e") nueva="é";
+else if(nueva==="i") nueva="í";
+else if(nueva==="o") nueva="ó";
+else if(nueva==="u") nueva="ú";
+
+}
 
 if(letra===letra.toLowerCase()){
 resultado+=nueva.toUpperCase();
