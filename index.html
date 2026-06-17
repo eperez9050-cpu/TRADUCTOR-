@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Traductor Esteban</title>
+
+<style>
+body{
+    margin:0;
+    background:#202124;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+h1{
+    text-align:center;
+    margin-top:20px;
+}
+
+.contenedor{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+    padding:20px;
+    flex-wrap:wrap;
+}
+
+.panel{
+    width:500px;
+}
+
+.caja{
+    background:#303134;
+    border:1px solid #5f6368;
+    border-radius:12px;
+    padding:15px;
+    min-height:250px;
+}
+
+textarea{
+    width:100%;
+    height:220px;
+    background:transparent;
+    border:none;
+    color:white;
+    font-size:24px;
+    resize:none;
+    outline:none;
+}
+
+.resultado{
+    font-size:24px;
+    white-space:pre-wrap;
+}
+
+.barra{
+    background:#303134;
+    padding:10px;
+    border-radius:12px;
+    margin-bottom:10px;
+}
+
+select{
+    background:#303134;
+    color:white;
+    border:none;
+    font-size:18px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>🌐 Traductor Esteban</h1>
+
+<div class="contenedor">
+
+<div class="panel">
+
+<div class="barra">
+Español
+</div>
+
+<div class="caja">
+
+<textarea
+id="entrada"
+placeholder="Escribe aquí..."
+oninput="traducir()"
+></textarea>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="barra">
+Idioma Esteban
+</div>
+
+<div class="caja">
+
+<div
+id="salida"
+class="resultado">
+Traducción
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const mapa = {
+'a':'u',
+'b':'z',
+'c':'y',
+'d':'x',
+'e':'o',
+'f':'w',
+'g':'v',
+'h':'t',
+'i':'i',
+'j':'s',
+'k':'r',
+'l':'q',
+'m':'p',
+'n':'ñ',
+'ñ':'n',
+'o':'e',
+'p':'m',
+'q':'l',
+'r':'k',
+'s':'j',
+'t':'h',
+'u':'a',
+'v':'g',
+'w':'f',
+'x':'d',
+'y':'c',
+'z':'b'
+};
+
+function traducir(){
+
+let texto =
+document.getElementById("entrada").value;
+
+let resultado = "";
+
+for(let letra of texto){
+
+if(letra === "."){
+resultado += ",";
+continue;
+}
+
+if(letra === ","){
+resultado += ".";
+continue;
+}
+
+let minuscula =
+letra.toLowerCase();
+
+if(mapa[minuscula]){
+
+let nueva =
+mapa[minuscula];
+
+if(letra === letra.toLowerCase()){
+resultado += nueva.toUpperCase();
+}else{
+resultado += nueva.toLowerCase();
+}
+
+}
+else{
+resultado += letra;
+}
+
+}
+
+document.getElementById("salida")
+.innerText = resultado;
+
+}
+
+</script>
+
+</body>
+</html>
