@@ -284,7 +284,9 @@ speechSynthesis.cancel();
 const voz =
 new SpeechSynthesisUtterance(texto);
 
-voz.lang = "es-ES";
+voz.lang = "es-EC";
+voz.rate = 0.8;
+voz.pitch = 0.8;
 
 speechSynthesis.speak(voz);
 
