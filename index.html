@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -76,7 +76,6 @@ cursor:pointer;
 font-size:16px;
 }
 </style>
-
 </head>
 <body>
 
@@ -85,6 +84,7 @@ font-size:16px;
 <div class="botones">
 <button onclick="intercambiar()">🔄 Intercambiar</button>
 <button onclick="dictar()">🎤 Dictar</button>
+<button onclick="hablarIdioma()">🔊 Escuchar</button>
 </div>
 
 <div class="contenedor">
@@ -107,40 +107,18 @@ oninput="traducir()"></textarea>
 </div>
 
 </div>
- 
 
 <script>
 
 let modo = "es-esteban";
 
 const mapa = {
-'a':'u',
-'b':'z',
-'c':'y',
-'d':'x',
-'e':'o',
-'f':'w',
-'g':'v',
-'h':'t',
-'i':'i',
-'j':'s',
-'k':'r',
-'l':'q',
-'m':'p',
-'n':'ñ',
-'ñ':'n',
-'o':'e',
-'p':'m',
-'q':'l',
-'r':'k',
-'s':'j',
-'t':'h',
-'u':'a',
-'v':'g',
-'w':'f',
-'x':'d',
-'y':'c',
-'z':'b'
+'a':'u','b':'z','c':'y','d':'x','e':'o',
+'f':'w','g':'v','h':'t','i':'i','j':'s',
+'k':'r','l':'q','m':'p','n':'ñ','ñ':'n',
+'o':'e','p':'m','q':'l','r':'k','s':'j',
+'t':'h','u':'a','v':'g','w':'f','x':'d',
+'y':'c','z':'b'
 };
 
 const inverso = {};
@@ -187,13 +165,11 @@ const tieneTilde =
 "áéíóúÁÉÍÓÚ".includes(letra);
 
 if(tieneTilde){
-
 if(nueva==="a") nueva="á";
 else if(nueva==="e") nueva="é";
 else if(nueva==="i") nueva="í";
 else if(nueva==="o") nueva="ó";
 else if(nueva==="u") nueva="ú";
-
 }
 
 if(letra===letra.toLowerCase()){
@@ -221,20 +197,18 @@ continue;
 let base = quitarTilde(letra);
 
 if(inverso[base]){
-  let nueva = inverso[base];
 
+let nueva = inverso[base];
 
 const tieneTilde =
 "áéíóúÁÉÍÓÚ".includes(letra);
 
 if(tieneTilde){
-
 if(nueva==="a") nueva="á";
 else if(nueva==="e") nueva="é";
 else if(nueva==="i") nueva="í";
 else if(nueva==="o") nueva="ó";
 else if(nueva==="u") nueva="ú";
-
 }
 
 if(letra===letra.toLowerCase()){
@@ -253,44 +227,19 @@ resultado+=letra;
 
 document.getElementById("salida").innerText =
 resultado;
-  if(modo === "es-esteban" && resultado.trim() !== ""){
-
-    speechSynthesis.cancel();
-
-    const voz = new SpeechSynthesisUtterance(resultado);
-
-    voz.lang = "es-ES";
-    voz.rate = 0.9;
-    voz.pitch = 0.8;
-
-    speechSynthesis.speak(voz);
-
-}
 
 }
 
 function intercambiar(){
 
 if(modo==="es-esteban"){
-
 modo="esteban-es";
-
-document.getElementById("nombreOrigen")
-.innerText="Idioma Esteban";
-
-document.getElementById("nombreDestino")
-.innerText="Español";
-
+document.getElementById("nombreOrigen").innerText="Idioma Esteban";
+document.getElementById("nombreDestino").innerText="Español";
 }else{
-
 modo="es-esteban";
-
-document.getElementById("nombreOrigen")
-.innerText="Español";
-
-document.getElementById("nombreDestino")
-.innerText="Idioma Esteban";
-
+document.getElementById("nombreOrigen").innerText="Español";
+document.getElementById("nombreDestino").innerText="Idioma Esteban";
 }
 
 traducir();
@@ -308,7 +257,6 @@ const reconocimiento =
 new webkitSpeechRecognition();
 
 reconocimiento.lang="es-ES";
-
 reconocimiento.start();
 
 reconocimiento.onresult=function(event){
@@ -321,9 +269,30 @@ traducir();
 };
 
 }
-}
-</script>
 
+function hablarIdioma(){
+
+if(modo !== "es-esteban") return;
+
+const texto =
+document.getElementById("salida").innerText;
+
+if(!texto.trim()) return;
+
+speechSynthesis.cancel();
+
+const voz =
+new SpeechSynthesisUtterance(texto);
+
+voz.lang = "es-ES";
+
+speechSynthesis.speak(voz);
+
+}
+
+</script>
 
 </body>
 </html>
+```
+
