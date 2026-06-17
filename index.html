@@ -8,65 +8,72 @@
 
 <style>
 body{
-    margin:0;
-    background:#202124;
-    color:white;
-    font-family:Arial,sans-serif;
+margin:0;
+font-family:Arial,sans-serif;
+background:#202124;
+color:white;
 }
 
 h1{
-    text-align:center;
-    margin-top:20px;
+text-align:center;
+padding:20px;
 }
 
 .contenedor{
-    display:flex;
-    gap:20px;
-    justify-content:center;
-    padding:20px;
-    flex-wrap:wrap;
+display:flex;
+justify-content:center;
+gap:20px;
+padding:20px;
+flex-wrap:wrap;
 }
 
 .panel{
-    width:500px;
+width:500px;
+}
+
+.idioma{
+background:#303134;
+padding:10px;
+border-radius:10px 10px 0 0;
+font-weight:bold;
 }
 
 .caja{
-    background:#303134;
-    border:1px solid #5f6368;
-    border-radius:12px;
-    padding:15px;
-    min-height:250px;
+background:#303134;
+border:1px solid #5f6368;
+padding:15px;
+border-radius:0 0 10px 10px;
+min-height:250px;
 }
 
 textarea{
-    width:100%;
-    height:220px;
-    background:transparent;
-    border:none;
-    color:white;
-    font-size:24px;
-    resize:none;
-    outline:none;
+width:100%;
+height:220px;
+background:transparent;
+border:none;
+color:white;
+font-size:22px;
+outline:none;
+resize:none;
 }
 
-.resultado{
-    font-size:24px;
-    white-space:pre-wrap;
+#salida{
+font-size:22px;
+white-space:pre-wrap;
 }
 
-.barra{
-    background:#303134;
-    padding:10px;
-    border-radius:12px;
-    margin-bottom:10px;
+.botones{
+text-align:center;
+margin-top:10px;
 }
 
-select{
-    background:#303134;
-    color:white;
-    border:none;
-    font-size:18px;
+button{
+padding:10px 15px;
+margin:5px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
 }
 </style>
 
@@ -75,47 +82,35 @@ select{
 
 <h1>🌐 Traductor Esteban</h1>
 
+<div class="botones">
+<button onclick="intercambiar()">🔄 Intercambiar</button>
+<button onclick="dictar()">🎤 Dictar</button>
+</div>
+
 <div class="contenedor">
 
 <div class="panel">
-
-<div class="barra">
-Español
-</div>
-
+<div class="idioma" id="nombreOrigen">Español</div>
 <div class="caja">
-
 <textarea
 id="entrada"
 placeholder="Escribe aquí..."
-oninput="traducir()"
-></textarea>
-
+oninput="traducir()"></textarea>
 </div>
-
 </div>
 
 <div class="panel">
-
-<div class="barra">
-Idioma Esteban
-</div>
-
+<div class="idioma" id="nombreDestino">Idioma Esteban</div>
 <div class="caja">
-
-<div
-id="salida"
-class="resultado">
-Traducción
+<div id="salida"></div>
 </div>
-
-</div>
-
 </div>
 
 </div>
 
 <script>
+
+let modo = "es-esteban";
 
 const mapa = {
 'a':'u',
@@ -147,6 +142,19 @@ const mapa = {
 'z':'b'
 };
 
+const inverso = {};
+
+for(let k in mapa){
+inverso[mapa[k]] = k;
+}
+
+function quitarTilde(t){
+return t
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"");
+}
+
 function traducir(){
 
 let texto =
@@ -156,39 +164,121 @@ let resultado = "";
 
 for(let letra of texto){
 
-if(letra === "."){
-resultado += ",";
+if(modo==="es-esteban"){
+
+if(letra==="."){
+resultado+=",";
 continue;
 }
 
-if(letra === ","){
-resultado += ".";
+if(letra===","){
+resultado+=".";
 continue;
 }
 
-let minuscula =
-letra.toLowerCase();
+let base = quitarTilde(letra);
 
-if(mapa[minuscula]){
+if(mapa[base]){
 
-let nueva =
-mapa[minuscula];
+let nueva = mapa[base];
 
-if(letra === letra.toLowerCase()){
-resultado += nueva.toUpperCase();
+if(letra===letra.toLowerCase()){
+resultado+=nueva.toUpperCase();
 }else{
-resultado += nueva.toLowerCase();
+resultado+=nueva.toLowerCase();
+}
+
+}else{
+resultado+=letra;
+}
+
+}else{
+
+if(letra===","){
+resultado+=".";
+continue;
+}
+
+if(letra==="."){
+resultado+=",";
+continue;
+}
+
+let base = quitarTilde(letra);
+
+if(inverso[base]){
+
+let nueva = inverso[base];
+
+if(letra===letra.toLowerCase()){
+resultado+=nueva.toUpperCase();
+}else{
+resultado+=nueva.toLowerCase();
+}
+
+}else{
+resultado+=letra;
 }
 
 }
-else{
-resultado += letra;
-}
 
 }
 
-document.getElementById("salida")
-.innerText = resultado;
+document.getElementById("salida").innerText =
+resultado;
+
+}
+
+function intercambiar(){
+
+if(modo==="es-esteban"){
+
+modo="esteban-es";
+
+document.getElementById("nombreOrigen")
+.innerText="Idioma Esteban";
+
+document.getElementById("nombreDestino")
+.innerText="Español";
+
+}else{
+
+modo="es-esteban";
+
+document.getElementById("nombreOrigen")
+.innerText="Español";
+
+document.getElementById("nombreDestino")
+.innerText="Idioma Esteban";
+
+}
+
+traducir();
+
+}
+
+function dictar(){
+
+if(!('webkitSpeechRecognition' in window)){
+alert("Tu navegador no soporta dictado.");
+return;
+}
+
+const reconocimiento =
+new webkitSpeechRecognition();
+
+reconocimiento.lang="es-ES";
+
+reconocimiento.start();
+
+reconocimiento.onresult=function(event){
+
+document.getElementById("entrada").value =
+event.results[0][0].transcript;
+
+traducir();
+
+};
 
 }
 
