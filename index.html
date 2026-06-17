@@ -107,9 +107,7 @@ oninput="traducir()"></textarea>
 </div>
 
 </div>
-  <button onclick="hablarIdioma()">
-🔊 Escuchar
-</button>
+ 
 
 <script>
 
@@ -323,24 +321,6 @@ traducir();
 };
 
 }
-function hablarIdioma(){
-
-    if(modo !== "es-esteban") return;
-
-    const texto =
-    document.getElementById("salida").innerText;
-
-    if(!texto.trim()) return;
-
-    speechSynthesis.cancel();
-
-    const voz =
-    new SpeechSynthesisUtterance(texto);
-
-    voz.lang = "es-ES";
-
-    speechSynthesis.speak(voz);
-
 }
 </script>
 
